@@ -23,12 +23,16 @@ const SubmitButtons = ({ text, className, variant }: IAppProps) => {
   return (
     <>
       {pending ? (
-        <Button className={cn("w-full", className)}>
+        <Button className={cn("w-fit", className)} disabled>
           <Loader2 className="mr-1.5 size-4 animate-spin" />
           Please Wait
         </Button>
       ) : (
-        <Button className={cn("w-fit", className)} variant={variant}>
+        <Button
+          className={cn("w-fit", className)}
+          variant={variant}
+          type="submit"
+        >
           {text}
         </Button>
       )}

@@ -1,6 +1,6 @@
 "use client";
 import { CreateSiteAction } from "@/app/actions";
-import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
@@ -16,6 +16,7 @@ import React, { useActionState } from "react";
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { siteSchema } from "@/app/utils/zodSchemas";
+import SubmitButtons from "@/app/components/dashboard/SubmitButtons";
 
 const CreatePage = () => {
   const [lastResult, action] = useActionState(CreateSiteAction, undefined);
@@ -85,7 +86,10 @@ const CreatePage = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button>Submit</Button>
+              <SubmitButtons
+                text="Create Site"
+                className="bg-blue-500 hover:bg-blue-700 py-5"
+              />
             </CardFooter>
           </form>
         </Card>

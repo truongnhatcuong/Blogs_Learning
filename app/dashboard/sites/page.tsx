@@ -1,3 +1,4 @@
+import EmptyState from "@/app/components/dashboard/EmptyState";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { prisma } from "@/lib/client";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { FileIcon, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -40,23 +41,15 @@ const Page = async () => {
         </Button>
       </div>
       {data === undefined || data.length == 0 ? (
-        <div className="flex flex-col items-center justify-between rounded-md border border-dashed p-8 text-center animate-in fade-in-50">
-          <div className="flex size-20 items-center justify-center rounded-full bg-primary/10">
-            <FileIcon className="size-9 text-blue-600" />
-          </div>
-          <h2>you dont have any sites created</h2>
-          <p className="mb-9 mt-2 text-center leading-tight  text-gray-600 dark:text-gray-200 max-w-sm mx-auto">
-            you currently dont have any Sites.Please create some so that you can
-            see right here!
-          </p>
-          <Button asChild className="px-3 py-5 bg-blue-500 hover:bg-blue-600">
-            <Link href={"/dashboard/sites/new"}>
-              <PlusCircle className="size-20" /> Create Site
-            </Link>
-          </Button>
-        </div>
+        <EmptyState
+          title="you dont have any sites created"
+          descriptions="  you currently dont have any Sites.Please create some so that you can see
+                right here!"
+          herf={"/dashboard/sites/new"}
+          buttonText=" Create Site"
+        />
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
           {data.map((item) => (
             <Card key={item.id}>
               <Image
@@ -67,8 +60,10 @@ const Page = async () => {
                 className="rounded-t-lg object-cover w-full h-[150px] "
               />
               <CardHeader>
-                <CardTitle>{item.name}</CardTitle>
-                <CardDescription>{item.description}</CardDescription>
+                <CardTitle className="truncate">{item.name}</CardTitle>
+                <CardDescription className="line-clamp-3">
+                  {item.description}
+                </CardDescription>
               </CardHeader>
               <CardFooter>
                 <Button

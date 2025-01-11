@@ -50,5 +50,7 @@ model Post{
  userId String?
  User User? @relation(fields: [userId], references: [id])
  siteId String?
- Site Site?  @relation(fields: [siteId],references: [id])
+ Site Site?  @relation(fields: [siteId],references: [id],onDelete:  Cascade)
+ 
 }
+

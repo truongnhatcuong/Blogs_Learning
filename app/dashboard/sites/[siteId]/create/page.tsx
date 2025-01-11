@@ -32,7 +32,7 @@ export default function AricleCreate({
   const { siteId } = React.use(params);
 
   const [image, setImage] = useState<undefined | string>(undefined);
-  const [value, setValue] = useState<JSONContent | undefined>(undefined);
+  const [value, setValue] = useState<JSONContent | undefined>(undefined) || "";
   const [lastResult, action] = useActionState(CreatePostAction, undefined);
   const [title, setTitle] = useState<undefined | string>("");
   const [slug, setSlugValue] = useState<undefined | string>("");
@@ -165,8 +165,7 @@ export default function AricleCreate({
                 type="hidden"
                 key={fields.articleContent.key}
                 name={fields.articleContent.name}
-                defaultValue={fields.articleContent.initialValue}
-                value={JSON.stringify(value) || undefined}
+                defaultValue={JSON.stringify(value) || undefined}
               />
               <TailwindEditor onChange={setValue} initialValue={value} />
               <p className="text-red-500 text-sm">
