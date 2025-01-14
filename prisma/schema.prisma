@@ -21,8 +21,12 @@ model User{
   lastName String
   profileImage String
   createdAt DateTime @default(now())
+  customerId String? @unique
   Site Site[]
-   posts Post[]
+  posts Post[]
+   stripeSubscriptionId String?
+  Subscription Subscription?
+
 } 
 
 model Site{
@@ -52,5 +56,18 @@ model Post{
  siteId String?
  Site Site?  @relation(fields: [siteId],references: [id],onDelete:  Cascade)
  
+}
+
+model Subscription{
+  stripeSubscriptionId String @id @unique
+  interval String
+  status String
+  planId String
+  currentPeriodStart Int
+  currentPeriodEnd Int
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  userId String? @unique
+  User User? @relation(fields: [userId], references: [id])
 }
 

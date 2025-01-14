@@ -34,24 +34,27 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 async function getData(userId: string, siteId: string) {
-  const data = await prisma.post.findMany({
+  const data = prisma.site.findUnique({
     where: {
+      id: siteId,
       userId: userId,
-      siteId: siteId,
     },
     select: {
-      image: true,
-      title: true,
-      createdAt: true,
-      id: true,
-      Site: {
-        select: { subdirectory: true },
+      subdirectory: true,
+      posts: {
+        select: {
+          id: true,
+          image: true,
+          title: true,
+          createdAt: true,
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
       },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
   });
+
   return data;
 }
 
@@ -74,7 +77,7 @@ export default async function pageArticle({
     <>
       <div className="flex w-full justify-end gap-x-4 ">
         <Button asChild variant={"secondary"}>
-          <Link href={`/blog/${data[0].Site?.subdirectory}`}>
+          <Link href={`/blog/${data?.subdirectory}`}>
             <Book />
             View Blogs
           </Link>
@@ -93,7 +96,7 @@ export default async function pageArticle({
           </Link>
         </Button>
       </div>
-      {data === undefined || data.length === 0 ? (
+      {data === undefined || data?.posts.length === 0 ? (
         <EmptyState
           title="you dont have any acrticle created"
           descriptions="you currently dont have any Sites.Please create some so that you can
@@ -122,7 +125,7 @@ export default async function pageArticle({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data.map((item) => (
+                  {data?.posts.map((item) => (
                     <TableRow key={item.id}>
                       <TableCell>
                         <Image
